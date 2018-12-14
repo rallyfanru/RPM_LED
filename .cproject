@@ -41,9 +41,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RPM_LED/Source}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RPM_LED/Startup}&quot;"/>
 								</option>
-								<option id="com.atollic.truestudio.gcc.symbols.defined.376443313" superClass="com.atollic.truestudio.gcc.symbols.defined" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="STM32F042x6"/>
-								</option>
+								<option id="com.atollic.truestudio.gcc.symbols.defined.376443313" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" useByScannerDiscovery="false" valueType="definedSymbols"/>
 								<inputType id="com.atollic.truestudio.gcc.input.1618354865" superClass="com.atollic.truestudio.gcc.input"/>
 							</tool>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ld.1453054466" name="C Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ld">
@@ -176,4 +174,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.atollic.truestudio.mbs.ARMToolsPerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>
