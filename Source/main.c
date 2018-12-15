@@ -4,6 +4,7 @@ volatile uint32_t lon=0;
 
 int main(void)
 {
+
 	RCC_init();
 
 	LATCH_H();
@@ -14,14 +15,15 @@ int main(void)
 
 	while(1){
 
+	for(uint8_t k=0; k<3; k++){
 		lon=0;
-		for(uint8_t i=0; i < 4; i++){
-			lon |= (1 << green_bit[i]);
+		for(uint8_t i=0; i < 8; i++){
+			lon |= (1 << color[k][i]);
 			led_send(lon);
-			for(uint32_t j=0; j<0x100000; j++){};
+			for(uint32_t j=0; j<0x10000; j++){};
 		};
-
-	}
+		}
+	};
 
 }
 
