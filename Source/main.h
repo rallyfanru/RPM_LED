@@ -4,6 +4,7 @@
 #include "stm32f0xx.h"
 #include "rcc.h"
 #include "spi.h"
+#include "timer.h"
 
 /*
  * SPI1

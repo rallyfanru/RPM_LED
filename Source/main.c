@@ -6,12 +6,15 @@ int main(void)
 {
 
 	RCC_init();
+	timer2_init();
+	timer3_init();
 
 	LATCH_H();
 	for(uint32_t i=0; i<0x1000; i++){};
 	LATCH_L();
 
 	spi_init();
+
 
 	while(1){
 
@@ -22,9 +25,8 @@ int main(void)
 			led_send(lon);
 			for(uint32_t j=0; j<0x10000; j++){};
 		};
-		}
-	};
-
+		};
+		};
 }
 
 
