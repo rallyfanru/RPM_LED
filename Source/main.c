@@ -33,6 +33,6 @@ int main(void)
 
 
 void delay(void){
-	for(uint32_t j=0; j<0x10000; j++){};
+	for(uint32_t j=0; j<0x100000; j++){};
 }
 
