@@ -38,9 +38,7 @@ void spi_init(void){
 
 	//SCK  PA5
 	GPIOA->MODER |= GPIO_MODER_MODER5_1; //Alternate
-	//GPIOA->OTYPER &= ~GPIO_OTYPER_OT_5; //Push-pull
 	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR5_0|GPIO_OSPEEDER_OSPEEDR5_1; //High
-	//GPIOA->PUPDR |= GPIO_PUPDR_PUPDR5_1; //Pull-down
 	GPIOA->AFR[0] &= ~GPIO_AFRL_AFRL5;  //AF0
 
 	//Latch PA6
@@ -50,15 +48,13 @@ void spi_init(void){
 	GPIOA->PUPDR |= GPIO_PUPDR_PUPDR6_1; //Pull-down
 
 	//PWM PA3
-//	GPIOA->MODER |= GPIO_MODER_MODER3_0; //Out
-//	GPIOA->OTYPER &= ~GPIO_OTYPER_OT_3; //Push-pull
-//	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR3_0|GPIO_OSPEEDER_OSPEEDR3_1; //High
-//	GPIOA->PUPDR |= GPIO_PUPDR_PUPDR3_1; //Pull-down
+	//Если нет таймера, инициализация с подтяжкой к земле, сигнал OE
+	//GPIOA->MODER |= GPIO_MODER_MODER3_0; //Out
+	//GPIOA->OTYPER &= ~GPIO_OTYPER_OT_3; //Push-pull
+	//GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR3_0|GPIO_OSPEEDER_OSPEEDR3_1; //High
+	//GPIOA->PUPDR |= GPIO_PUPDR_PUPDR3_1; //Pull-down
 
 	//SPI
-
-
-
 	SPI1->CR1 &= ~SPI_CR1_BIDIMODE;
 	SPI1->CR1 &= ~SPI_CR1_CRCEN;
 

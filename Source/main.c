@@ -1,6 +1,7 @@
 #include "main.h"
 
 volatile uint32_t lon=0;
+static uint8_t canmsg[]={1,2,3,4,5,6,7,8};
 
 int main(void)
 {
@@ -9,12 +10,12 @@ int main(void)
 	timer2_init();
 	timer3_init();
 
+	can_init();
+
 	LATCH_H();
-	for(uint32_t i=0; i<0x1000; i++){};
+	delay();
 	LATCH_L();
-
 	spi_init();
-
 
 	while(1){
 
@@ -23,58 +24,15 @@ int main(void)
 		for(uint8_t i=0; i < 8; i++){
 			lon |= (1 << color[k][i]);
 			led_send(lon);
-			for(uint32_t j=0; j<0x10000; j++){};
+			delay();
+			can_send(CAN,0x100,canmsg);
 		};
 		};
 		};
 }
 
 
-
-
-
-
-/*
-	lon=0;
-	for(uint8_t i=0; i < 4; i++){
-		lon |= (1 << green_bit[i]);
-		led_send(lon);
-		Delay(200);
-	};
-
-	lon=0;
-	for(uint8_t i=0; i < 4; i++){
-		lon |= (1 << red_bit[i]);
-		led_send(lon);
-		Delay(200);
-	};
-
-	lon=0;
-	for(uint8_t i=0; i < 4; i++){
-		lon |= (1 << blue_bit[i]);
-		led_send(lon);
-		Delay(200);
-	};
-
-
-	lon=0;
-	for(uint8_t i=0; i < 4; i++){
-		lon |= (1 << red_bit[i])|(1 << green_bit[i]);
-		led_send(lon);
-		Delay(200);
-	};
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
+void delay(void){
+	for(uint32_t j=0; j<0x10000; j++){};
+}
 

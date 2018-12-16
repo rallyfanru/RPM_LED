@@ -5,6 +5,7 @@
 #include "rcc.h"
 #include "spi.h"
 #include "timer.h"
+#include "can.h"
 
 /*
  * SPI1
@@ -35,6 +36,8 @@ const uint8_t blue_bit[]  = {18, 21, 30, 27, 2, 5, 8, 11};
 
 const uint8_t* color[] = {blue_bit,red_bit,green_bit};
 
+
+void delay(void);
 
 
 #endif
