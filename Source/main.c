@@ -5,6 +5,7 @@ int main(void)
 {
 	RCC_init();
 	pwm_timer_init();
+	wd_timer_init();
 	spi_init();
 	set_brihtness(DEFAULT_BRI);
 

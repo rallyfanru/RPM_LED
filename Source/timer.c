@@ -36,3 +36,22 @@ void pwm_timer_init(void){
 	TIM2->CR1 |= TIM_CR1_CEN;
 }
 
+void wd_timer_init(void){
+       RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
+       TIM3->PSC = TIM_CLK/1000 - 1;
+       TIM3->ARR = 1000;
+       TIM3->DIER |= TIM_DIER_UIE;
+       TIM3->CR1 |= TIM_CR1_CEN;
+       NVIC_EnableIRQ(TIM3_IRQn);
+}
+
+void TIM3_IRQHandler(void)
+{
+       if(TIM3->SR & TIM_SR_UIF)       TIM3->SR &= ~TIM_SR_UIF;
+
+       if(can_alive == 0){
+    	   can_send(CAN,(uint32_t)canreq_rpm.ID,(uint8_t *)canreq_rpm.msg);
+       }
+
+       can_alive=0;
+};
