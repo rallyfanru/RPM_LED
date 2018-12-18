@@ -6,13 +6,13 @@ volatile uint32_t saved_num=0;
 void led_send(uint32_t num){
 	if(num != saved_num){
 		LATCH_H();
-		latch_delay();
+		//latch_delay();
 		LATCH_L();
 		spi_send16((uint16_t)(num & 0xFFFF));
 		spi_send16((uint16_t)((num >> 16) & 0xFFFF));
 		while((SPI1->SR & SPI_SR_BSY) > 0){};
 		LATCH_H();
-		latch_delay();
+		//latch_delay();
 		LATCH_L();
 		saved_num=num;
 	}
@@ -34,7 +34,7 @@ void spi_send16(uint16_t data){
 void spi_init(void){
 
 	LATCH_H();
-	latch_delay();
+	//latch_delay();
 	LATCH_L();
 
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
