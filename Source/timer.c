@@ -1,6 +1,7 @@
 #include "timer.h"
 
-volatile uint32_t pwm=0;
+volatile uint16_t brihtness=0;
+volatile uint8_t led_blink=0;
 
 void set_brihtness(uint16_t bri){
 	if(bri > 1999) bri = 1999;
@@ -36,6 +37,9 @@ void pwm_timer_init(void){
 	TIM2->CR1 |= TIM_CR1_CEN;
 }
 
+/*
+ * Раз в секунду проверяет, есть ли обмен по CAN
+ */
 void wd_timer_init(void){
        RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
        TIM3->PSC = TIM_CLK/1000 - 1;
@@ -49,9 +53,43 @@ void TIM3_IRQHandler(void)
 {
        if(TIM3->SR & TIM_SR_UIF)       TIM3->SR &= ~TIM_SR_UIF;
 
-       if(can_alive == 0){
+       if(can_alive == 0) {
     	   can_send(CAN,(uint32_t)canreq_rpm.ID,(uint8_t *)canreq_rpm.msg);
-       }
+    	   rpm=0;
+    	  }
 
        can_alive=0;
 };
+
+
+void blink_timer_init(void){
+       RCC->APB1ENR |= RCC_APB1ENR_TIM14EN;
+       TIM14->PSC = TIM_CLK/1000 - 1;
+       TIM14->ARR = 100;
+       TIM14->DIER |= TIM_DIER_UIE;
+       NVIC_EnableIRQ(TIM14_IRQn);
+}
+
+void TIM14_IRQHandler(void)
+{
+       if(TIM14->SR & TIM_SR_UIF) TIM14->SR &= ~TIM_SR_UIF;
+
+       if(led_blink){
+    	   TIM2->CCR4=brihtness;
+    	   led_blink=0;
+       }else{
+    	   brihtness=TIM2->CCR4;
+    	   TIM2->CCR4=0;
+    	   led_blink=1;
+       }
+
+};
+
+void blink(uint8_t enable){
+	if(enable){
+		TIM14->CR1 |= TIM_CR1_CEN;
+	}else{
+		TIM14->CR1 &= ~TIM_CR1_CEN;
+		TIM2->CCR4=brihtness;
+	}
+}

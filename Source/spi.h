@@ -13,6 +13,6 @@ void spi_init(void);
 void spi_send8(uint8_t data);
 void spi_send16(uint16_t data);
 void led_send(uint32_t num);
-
+void latch_delay(void);
 
 #endif

@@ -10,5 +10,7 @@
 void set_brihtness(uint16_t bri);
 void pwm_timer_init(void);
 void wd_timer_init(void);
+void blink_timer_init(void);
+void blink(uint8_t enable);
 
 #endif

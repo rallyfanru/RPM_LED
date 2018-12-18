@@ -1,11 +1,13 @@
 #include "main.h"
 
+uint8_t blink_status=0;
 
 int main(void)
 {
 	RCC_init();
 	pwm_timer_init();
 	wd_timer_init();
+	blink_timer_init();
 	spi_init();
 	set_brihtness(DEFAULT_BRI);
 
@@ -23,10 +25,21 @@ uint32_t set_leds_by_rpm(uint16_t rpm){
 	uint8_t color=0;
 
 	color=RED;
-	if(rpm < 3000) color=GREEN;
+	if(rpm < 3500) color=GREEN;
 	if(rpm < 1500) color=BLUE;
 
-	if(rpm > 4000) rpm=4000;
+	if(rpm > 4000) {
+		rpm=4000;
+		if(blink_status == 0){
+			blink_status=1;
+			blink(1);
+		}
+	}else{
+		if(blink_status == 1){
+			blink_status=0;
+			blink(0);
+		}
+	}
 
 	for(uint8_t i=0; i< rpm/500; i++){
 		leds |= (1 << led_color[color][i]);
