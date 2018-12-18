@@ -1,18 +1,17 @@
 #include "spi.h"
 
+//Чтобы не дергать SPI одними и теми же значениями, сохранение предыдущего вывода
 volatile uint32_t saved_num=0;
 
 
 void led_send(uint32_t num){
 	if(num != saved_num){
 		LATCH_H();
-		//latch_delay();
 		LATCH_L();
 		spi_send16((uint16_t)(num & 0xFFFF));
 		spi_send16((uint16_t)((num >> 16) & 0xFFFF));
 		while((SPI1->SR & SPI_SR_BSY) > 0){};
 		LATCH_H();
-		//latch_delay();
 		LATCH_L();
 		saved_num=num;
 	}
@@ -22,7 +21,7 @@ void led_send(uint32_t num){
 
 void spi_send8(uint8_t data){
 		 while((SPI1->SR & SPI_SR_TXE) == 0){};
-		 SPI1->DR = data;
+		 SPI1_DR_8b = data;
 };
 
 void spi_send16(uint16_t data){
@@ -34,7 +33,6 @@ void spi_send16(uint16_t data){
 void spi_init(void){
 
 	LATCH_H();
-	//latch_delay();
 	LATCH_L();
 
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
@@ -80,6 +78,3 @@ void spi_init(void){
 	SPI1->CR1 |= SPI_CR1_SPE;
 }
 
-void latch_delay(void){
-	for(uint8_t i=0; i<0x10;i++){asm("NOP");};
-}
