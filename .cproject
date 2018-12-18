@@ -41,7 +41,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RPM_LED/Source}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/RPM_LED/Startup}&quot;"/>
 								</option>
-								<option id="com.atollic.truestudio.gcc.symbols.defined.376443313" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" useByScannerDiscovery="false" valueType="definedSymbols"/>
+								<option id="com.atollic.truestudio.gcc.symbols.defined.376443313" name="Defined symbols" superClass="com.atollic.truestudio.gcc.symbols.defined" useByScannerDiscovery="false"/>
 								<inputType id="com.atollic.truestudio.gcc.input.1618354865" superClass="com.atollic.truestudio.gcc.input"/>
 							</tool>
 							<tool id="com.atollic.truestudio.exe.debug.toolchain.ld.1453054466" name="C Linker" superClass="com.atollic.truestudio.exe.debug.toolchain.ld">
@@ -75,7 +75,9 @@
 								<option id="com.atollic.truestudio.ldcc.general.scriptfile.1462035259" name="Linker script" superClass="com.atollic.truestudio.ldcc.general.scriptfile"/>
 							</tool>
 							<tool id="com.atollic.truestudio.ar.base.701389314" name="Archiver" superClass="com.atollic.truestudio.ar.base"/>
-							<tool id="com.atollic.truestudio.exe.debug.toolchain.secoutput.196494696" name="Other" superClass="com.atollic.truestudio.exe.debug.toolchain.secoutput"/>
+							<tool id="com.atollic.truestudio.exe.debug.toolchain.secoutput.196494696" name="Other" superClass="com.atollic.truestudio.exe.debug.toolchain.secoutput">
+								<option id="com.atollic.truestudio.secoutput.general.convert.246620064" superClass="com.atollic.truestudio.secoutput.general.convert" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
@@ -174,5 +176,12 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.atollic.truestudio.mbs.ARMToolsPerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/RPM_LED"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/RPM_LED"/>
+		</configuration>
+	</storageModule>
 </cproject>

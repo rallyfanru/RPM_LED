@@ -1,12 +1,19 @@
 #include "timer.h"
 
 volatile uint32_t pwm=0;
+
+void set_brihtness(uint16_t bri){
+	if(bri > 1999) bri = 1999;
+	TIM2->CCR4 = bri;
+}
+
+
 //TIM2 CH4
 //PWM TIMER
 //PWM PIN: PA3
-//TIM2->CCR2 = 0   0%
-//TIM2->CCR2 = 1999  100%
-void timer2_init(void){
+//TIM2->CCR4 = 0   0%
+//TIM2->CCR4 = 1999  100%
+void pwm_timer_init(void){
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
 
 	GPIOA->OTYPER &= ~GPIO_OTYPER_OT_3;
@@ -25,24 +32,7 @@ void timer2_init(void){
 
 	TIM2->PSC = 48;
 	TIM2->ARR = 1000;
-	TIM2->CCR4 = 100;
+	TIM2->CCR4 = 0;
 	TIM2->CR1 |= TIM_CR1_CEN;
 }
-
-void timer3_init(void){
-	RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
-	TIM3->PSC = (uint16_t)((TIM_CLK)/1000) - 1;
-	TIM3->ARR = 1000 - 1;
-	TIM3->DIER |= TIM_DIER_UIE;
-	TIM3->CR1 |= TIM_CR1_CEN;
-	NVIC_EnableIRQ(TIM3_IRQn);
-}
-
-void TIM3_IRQHandler(void)
-{
-	if(TIM3->SR & TIM_SR_UIF)	TIM3->SR &= ~TIM_SR_UIF;
-	pwm+=100;
-	if(pwm > 1000) pwm=0;
-	TIM2->CCR4 = pwm;
-};
 

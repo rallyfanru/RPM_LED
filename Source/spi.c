@@ -26,6 +26,8 @@ void spi_send16(uint16_t data){
 
 void spi_init(void){
 
+	LATCH_H();
+	LATCH_L();
 
 	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
 	RCC->APB2ENR |= RCC_APB2ENR_SPI1EN;

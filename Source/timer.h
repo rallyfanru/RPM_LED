@@ -4,8 +4,10 @@
 
 #define TIM_CLK 48000000U
 
-void timer2_init(void);
-void timer3_init(void);
+#define DEFAULT_BRI 100
+
+void set_brihtness(uint16_t bri);
+void pwm_timer_init(void);
 
 
 #endif

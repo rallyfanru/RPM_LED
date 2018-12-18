@@ -1,4 +1,5 @@
 /Release/
 /Debug/
 *.launch
+.code_review_properties
 

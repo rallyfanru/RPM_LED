@@ -28,16 +28,12 @@
 #define GREEN 2
 #define RED 1
 
-
 const uint8_t red_bit[]   = {16, 19, 22, 29, 0, 3, 6, 9};
 const uint8_t green_bit[] = {17, 20, 23, 28, 1, 4, 7, 10};
 const uint8_t blue_bit[]  = {18, 21, 30, 27, 2, 5, 8, 11};
-
-
 const uint8_t* color[] = {blue_bit,red_bit,green_bit};
 
 
-void delay(void);
 
 
 #endif
