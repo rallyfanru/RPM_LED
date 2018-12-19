@@ -106,25 +106,37 @@ PA12 - TX
 	CAN->BTR |= CAN_BTR_48MHz_500kb;
 
 	//Filters
-	if(CAN_ENABLE_FILTERS){
-		CAN->FMR |= CAN_FMR_FINIT;													//Âõîä â ðåæèì íàñòðîéêè ôèëüòðîâ
-		//CAN1->FMR |= (28 << 8);   												//Âñå ôèëüòðû äëÿ CAN1
-		//CAN1->FM1R &= ~CAN_FM1R_FBM0; 											//Identifier Mask Mode äëÿ ôèëüòðà 0
-		CAN->FM1R |= CAN_FM1R_FBM0;												//Identifier List Mode äëÿ ôèëüòðà 0
-		CAN->FM1R |= CAN_FM1R_FBM1;												//Identifier List Mode äëÿ ôèëüòðà 1
-		CAN->FS1R &= ~CAN_FS1R_FSC0; 												//1-32bit 0-16bit mode äëÿ ôèëüòðà 0
-		CAN->FS1R &= ~CAN_FS1R_FSC1; 												//1-32bit 0-16bit mode äëÿ ôèëüòðà 0
 
-		CAN->sFilterRegister[0].FR1=((uint32_t)OBD_REQ << 21)|((uint32_t)OBD_ANS << 5);		//  2*16-bit ID
-		CAN->sFilterRegister[0].FR2=0;
-		CAN->sFilterRegister[1].FR1=0;
-		CAN->sFilterRegister[1].FR2=0;
+#if defined CAN_ENABLE_FILTERS
+		CAN->FMR |= CAN_FMR_FINIT;
+		CAN->FM1R |= CAN_FM1R_FBM0;		 //Identifier List Mode для фильтра 0
+		//CAN->FM1R |= CAN_FM1R_FBM1;	 	 //Identifier List Mode для фильтра 1
 
-		CAN->FFA1R = 0;																		//Âñå ôèëüòðû â FIFO0
+		//16bit
+		//CAN->FS1R &= ~CAN_FS1R_FSC0; 	 //1-32bit 0-16bit ID mode для фильтра 0
+		//CAN->sFilterRegister[0].FR1=((uint16_t)SET_BRI_ID << 21)|((uint16_t)OBD_ANS << 5);		//  2*16-bit ID
+		//CAN->sFilterRegister[0].FR2=0;
+
+		//32bit
+		CAN->FS1R |= CAN_FS1R_FSC0; 	 //1-32bit 0-16bit ID mode для фильтра 0
+		CAN->sFilterRegister[0].FR1=(uint32_t)SET_BRI_ID << 21;
+		CAN->sFilterRegister[0].FR2=(uint32_t)OBD_ANS << 21;
+
+		/*
+		 * Выравнивание ID по левому краю, поэтому если в одном фильтре 4 16-bit ID, то смещения 5 и 21 влево,
+		 * а если в фильтре два 32-bit ID то смещение на 21 у обоих.
+		 * Если фильтр пустой (с ID 0), но включен, сообщение с ID=0 будет проходить.
+		 */
+
+//		CAN->FS1R &= ~CAN_FS1R_FSC1; 	 //1-32bit 0-16bit ID mode для фильтра 0
+//		CAN->sFilterRegister[1].FR1=0;
+//		CAN->sFilterRegister[1].FR2=0;
+
+		CAN->FFA1R = 0;															//использовать FIFO0
 		CAN->FA1R |= CAN_FA1R_FACT0; 											//Enable filter 0
-		CAN->FA1R |= CAN_FA1R_FACT1; 											//Enable filter 1
-		CAN->FMR &= ~CAN_FMR_FINIT;												//Âûõîä èç ðåæèìà íàñòðîéêè ôèëüòðîâ
-	}else{
+		//CAN->FA1R |= CAN_FA1R_FACT1; 											//Enable filter 1
+		CAN->FMR &= ~CAN_FMR_FINIT;												//закончить настройку фильтров
+#else
 		CAN->FMR |= CAN_FMR_FINIT;
 		CAN->FM1R &= ~CAN_FM1R_FBM0; //Mask Mode
 		CAN->FS1R |= CAN_FS1R_FSC0; //32bit mode
@@ -132,7 +144,7 @@ PA12 - TX
 		CAN->sFilterRegister[0].FR2=0x0;
 		CAN->FA1R |= CAN_FA1R_FACT0; //Enable filter
 		CAN->FMR &= ~CAN_FMR_FINIT;
-	};
+#endif
 
 	//Interrupts
 	//CAN->IER |= CAN_IER_TMEIE;

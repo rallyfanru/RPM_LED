@@ -14,6 +14,7 @@ int main(void)
 	led_send((uint32_t)(1 << green_bit[1])|(1 << green_bit[2])|(1 << green_bit[3])|(1 << green_bit[4]));
 	can_init();
 
+
 	while(1){
 		led_send(set_leds_by_rpm(rpm));
 	}

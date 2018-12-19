@@ -4,7 +4,9 @@
 #include "timer.h"
 
 #define DATA_CAN			(CAN_TypeDef*)CAN
-#define CAN_ENABLE_FILTERS  (uint8_t)0
+
+//Включена фильтрация CAN пакетов
+#define CAN_ENABLE_FILTERS  1
 /*
 http://www.bittiming.can-wiki.info/
 */
