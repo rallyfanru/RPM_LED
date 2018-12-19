@@ -17,11 +17,11 @@ void CEC_CAN_IRQHandler(void){
 	CAN_MSG.msg[3]=(uint8_t)((CAN->sFIFOMailBox[0].RDLR >> 24) & 0xFF);
 
 	CAN_MSG.msg[4]=(uint8_t) (CAN->sFIFOMailBox[0].RDHR & 0xFF);
-	/*
+
 	CAN_MSG.msg[5]=(uint8_t)((CAN->sFIFOMailBox[0].RDHR >> 8) & 0xFF);
 	CAN_MSG.msg[6]=(uint8_t)((CAN->sFIFOMailBox[0].RDHR >> 16) & 0xFF);
 	CAN_MSG.msg[7]=(uint8_t)((CAN->sFIFOMailBox[0].RDHR >> 24) & 0xFF);
-	*/
+
 
 	CAN->RF0R |= CAN_RF0R_RFOM0;
 
@@ -29,13 +29,14 @@ void CEC_CAN_IRQHandler(void){
 
 	case SET_BRI_ID:
 		set_brihtness((uint16_t)( (CAN_MSG.msg[1]<<8) | CAN_MSG.msg[0] ));
+		can_send(CAN,(uint16_t)RET_BRI_ID,(uint8_t *)CAN_MSG.msg);
 		break;
 
 	case OBD_ANS:
 		if(CAN_MSG.msg[2] == ENGINE_RPM) {
 			rpm=(((uint16_t)CAN_MSG.msg[3] << 8)+CAN_MSG.msg[4])/4;
 			can_alive=1;
-			can_send(CAN,(uint32_t)canreq_rpm.ID,(uint8_t *)canreq_rpm.msg);
+			can_send(CAN,(uint16_t)canreq_rpm.ID,(uint8_t *)canreq_rpm.msg);
 		}
 		break;
 

@@ -48,3 +48,20 @@ uint32_t set_leds_by_rpm(uint16_t rpm){
 	return leds;
 
 };
+
+
+void test_mode(void){
+	volatile uint32_t lon=0;
+
+	for(uint8_t k=0; k < 3; k++){
+	lon=0;
+     for(uint8_t i=0; i < 8; i++){
+	 		lon |= (1 << led_color[k][i]);
+	 	}
+    led_send(lon);
+
+    for(uint32_t j=0; j<0x100000; j++){};
+	};
+
+
+}

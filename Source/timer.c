@@ -5,8 +5,11 @@ volatile uint8_t led_blink=0;
 
 void set_brihtness(uint16_t bri){
 	if(bri > 1999) bri = 1999;
+
+	brihtness=bri;
 	TIM2->CCR4 = bri;
 }
+
 
 
 //TIM2 CH4
@@ -51,13 +54,12 @@ void wd_timer_init(void){
 
 void TIM3_IRQHandler(void)
 {
-       if(TIM3->SR & TIM_SR_UIF)       TIM3->SR &= ~TIM_SR_UIF;
+	if(TIM3->SR & TIM_SR_UIF)       TIM3->SR &= ~TIM_SR_UIF;
 
-       if(can_alive == 0) {
-    	   can_send(CAN,(uint32_t)canreq_rpm.ID,(uint8_t *)canreq_rpm.msg);
-    	   rpm=0;
-    	  }
-
+    if(can_alive == 0) {
+       can_send(CAN,(uint32_t)canreq_rpm.ID,(uint8_t *)canreq_rpm.msg);
+       rpm=0;
+       }
        can_alive=0;
 };
 

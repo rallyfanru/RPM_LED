@@ -18,6 +18,7 @@ http://www.bittiming.can-wiki.info/
 #define OBD_REQ   (uint16_t)0x7DF
 #define OBD_ANS   (uint16_t)0x7E8
 #define SET_BRI_ID (uint16_t)0x101
+#define RET_BRI_ID (uint16_t)0x102
 
 /*
  * OBDII
