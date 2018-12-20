@@ -6,4 +6,7 @@
 CAN передатчик: SN65HVD230  
 Сдвиговый регистр (2 штуки последовательно): STP16CP05MTR 
   
-Проект сделан в TrueStudio 9.1  
+Проект сделан в TrueStudio 9.1    
+  
+ Аппаратная часть: https://github.com/rallyfanru/RPM_LED_HW
+
