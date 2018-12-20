@@ -34,7 +34,7 @@ const uint8_t blue_bit[]  = {18, 21, 30, 27, 2, 5, 8, 11};
 const uint8_t* led_color[] = {blue_bit,red_bit,green_bit};
 
 uint32_t set_leds_by_rpm(uint16_t rpm);
-
+void test_mode(void);
 
 #endif
 

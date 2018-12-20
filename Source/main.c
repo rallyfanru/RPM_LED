@@ -10,10 +10,13 @@ int main(void)
 	blink_timer_init();
 	spi_init();
 	set_brihtness(DEFAULT_BRI);
-
-	led_send((uint32_t)(1 << green_bit[1])|(1 << green_bit[2])|(1 << green_bit[3])|(1 << green_bit[4]));
 	can_init();
 
+	while(!can_send_ok){
+		test_mode();
+	}
+
+	led_send(0);
 
 	while(1){
 		led_send(set_leds_by_rpm(rpm));
@@ -61,7 +64,7 @@ void test_mode(void){
 	 	}
     led_send(lon);
 
-    for(uint32_t j=0; j<0x100000; j++){};
+    for(uint32_t j=0; j<0x500000; j++){asm("NOP");};
 	};
 
 

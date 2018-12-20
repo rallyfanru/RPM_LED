@@ -2,6 +2,7 @@
 
 volatile uint16_t rpm=0;
 volatile uint8_t can_alive=0;
+volatile uint8_t can_send_ok=0;
 
 
 const struct can_message canreq_rpm     = {OBD_REQ, {0x02,0x01,ENGINE_RPM,00,00,00,00,00} };
@@ -9,7 +10,15 @@ const struct can_message canreq_rpm     = {OBD_REQ, {0x02,0x01,ENGINE_RPM,00,00,
 void CEC_CAN_IRQHandler(void){
 	struct can_message CAN_MSG;
 
-	CAN_MSG.ID=(uint16_t)((CAN->sFIFOMailBox[0].RIR >> 21) & 0xFFFF);
+	if(!can_send_ok){
+		if( ((CAN->TSR & CAN_TSR_TXOK0) > 0) | ((CAN->TSR & CAN_TSR_TXOK1) > 0) | ((CAN->TSR & CAN_TSR_TXOK2) > 0) ){
+			CAN->IER &= ~CAN_IER_TMEIE;
+			can_send_ok=1;
+		}
+	};
+
+	//7FF - 11 bit
+	CAN_MSG.ID=(uint16_t)((CAN->sFIFOMailBox[0].RIR >> 21) & 0x7FF);
 
 	CAN_MSG.msg[0]=(uint8_t) (CAN->sFIFOMailBox[0].RDLR & 0xFF);
 	CAN_MSG.msg[1]=(uint8_t)((CAN->sFIFOMailBox[0].RDLR >> 8) & 0xFF);
@@ -17,11 +26,9 @@ void CEC_CAN_IRQHandler(void){
 	CAN_MSG.msg[3]=(uint8_t)((CAN->sFIFOMailBox[0].RDLR >> 24) & 0xFF);
 
 	CAN_MSG.msg[4]=(uint8_t) (CAN->sFIFOMailBox[0].RDHR & 0xFF);
-
 	CAN_MSG.msg[5]=(uint8_t)((CAN->sFIFOMailBox[0].RDHR >> 8) & 0xFF);
 	CAN_MSG.msg[6]=(uint8_t)((CAN->sFIFOMailBox[0].RDHR >> 16) & 0xFF);
 	CAN_MSG.msg[7]=(uint8_t)((CAN->sFIFOMailBox[0].RDHR >> 24) & 0xFF);
-
 
 	CAN->RF0R |= CAN_RF0R_RFOM0;
 
@@ -43,9 +50,6 @@ void CEC_CAN_IRQHandler(void){
 	default:
 		break;
 	};
-
-
-
 
 };
 
@@ -147,14 +151,14 @@ PA12 - TX
 #endif
 
 	//Interrupts
-	//CAN->IER |= CAN_IER_TMEIE;
-	//CAN->IER |= CAN_IER_FFIE0 | CAN_IER_FMPIE0|  CAN_IER_FOVIE0;
+	//Прерывание по отправке. Используется 1 раз, чтобы
+	//проверить что есть кан-шина и выключить тест-режим
+	CAN->IER |= CAN_IER_TMEIE;
+
 	CAN->IER |= CAN_IER_FMPIE0;
 
 	CAN->MCR &= ~CAN_MCR_INRQ; //Init mode off
 	//while (CAN1->MSR & CAN_MSR_INAK) {};
 
 	NVIC_EnableIRQ(CEC_CAN_IRQn);
-
-
 }

@@ -54,13 +54,13 @@ void wd_timer_init(void){
 
 void TIM3_IRQHandler(void)
 {
-	if(TIM3->SR & TIM_SR_UIF)       TIM3->SR &= ~TIM_SR_UIF;
+	if(TIM3->SR & TIM_SR_UIF) TIM3->SR &= ~TIM_SR_UIF;
 
     if(can_alive == 0) {
        can_send(CAN,(uint32_t)canreq_rpm.ID,(uint8_t *)canreq_rpm.msg);
        rpm=0;
        }
-       can_alive=0;
+     can_alive=0;
 };
 
 

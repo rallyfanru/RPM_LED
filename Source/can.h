@@ -41,6 +41,7 @@ struct can_message
 extern volatile uint16_t rpm;
 extern volatile uint8_t can_alive;
 extern const struct can_message canreq_rpm;
+extern volatile uint8_t can_send_ok;
 
 void can_init(void);
 void can_send(CAN_TypeDef* can, uint32_t id, uint8_t *msg);
